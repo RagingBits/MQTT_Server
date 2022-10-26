@@ -1,0 +1,64 @@
+MQTT Server quick start
+___________________________
+
+
+
+This document is intended to give an overview of the basic setup of the MQTT server.
+
+
+OS:
+¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+The MQTT server runs DietPi. The choice was based on the SD life, which diet pi extends by reducing to the minimum the amount of writes performed.
+This means that both SWAP memory and Log are disabled and that work "tmp" folder resides in RAM.
+It is possible to revert these options using "dietpi-config" command, although this is not recommended.
+
+All the OS credit to the dietpi developers. More information at https://dietpi.com/
+
+
+Default Setup:
+¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+The basic setup of the server consist in 4 main elements:
+	
+	The work folder:
+	The work folder is set in "/home/dietpi/mqtt_radio/". This work folder is shared through samba service. This means one can access and 
+    edit/change scrits on the fly whithout having to log into an SSH account into the server.
+	
+	The basic scripts running:
+	The basic scripts running can be configured in the startup.sh file sitting in the work folder. All the scripts enunciated here, 
+    will always be called when the server starts.
+	By default, there is already the radio extender to MQTT bridge that uses a USB serial port adaptor
+    connected to a SympleLink radio Central device; the display service; a basic command executer(*1) (see Basic command executer further down).
+    
+	The display:
+	The display work is managed by a python script "sys_info.py" "sitting in "/home/dietpi/display/OrangePi-OLED/examples".
+      It has the basic system information, but more important, it has the IP given by the DHCP when connected. This IP will be needed by every device
+    that needs to deal with the MQTT broker.
+
+	The MQTT broker
+	The mqtt broker installed is Mosquitto. Configured as anonymous users and non encripted connection, the server will
+	- Have the IP given by the DHCP
+	- Serve both localhost users (like the radio mqtt bridge) and remote users
+	- Run on port 1883
+
+Basic Command Executer (*1)
+¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+The basic command executer consists in a simple python script and will pick up special prefixed named text files and execute the commands inside
+on a shell service.
+The basic command text files and further detailed info, sit in the folder "commands_runner".
+Simply copy past one of these simple command text files into the base work folder and the command will pick it up, execute it and delete it.
+The command output will be appended to a file named "simple.command.out.txt". 
+Simple.
+This is the simplest way to reboot or shutdown your server without having to logging in SSH.
+
+
+
+SSH Login
+¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+As a developer SSH login will be one of the most useful tools. The setup is for root access.
+User: root
+Password: dietpi
+
+
+
+
+
